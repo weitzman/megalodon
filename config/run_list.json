@@ -1,0 +1,6 @@
+{
+  "recipes": [
+     "homebrew", "homebrew::misc", "mysql::mariadb", "php",
+     "php::module_apc", "php::module_memcached", "php::module_xdebug", "xhprof", "solr", "varnish"
+  ]
+}

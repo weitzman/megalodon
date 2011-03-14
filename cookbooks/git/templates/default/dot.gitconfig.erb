@@ -1,0 +1,47 @@
+[core]
+  excludesfile = <%= @home %>/.gitfiles/excludes
+  editor = <%= @editor %>
+  whitespace = trailing-space,space-before-tab
+
+[apply]
+  whitespace = fix
+
+[color]
+  ui = true ;doesnt work for some reason ...
+
+  interactive = true
+  status = true
+  branch = true
+  diff = true
+[alias]
+  st = status
+  ci = commit
+  co = checkout
+  br = branch
+  ls = branch
+  s  = status
+  a  = add
+  b  = branch
+  d  = diff
+  dc = diff --cached
+  v  = show
+  l  = log --pretty=oneline
+  ll = log
+  cp = cherry-pick
+  c  = checkout
+  cc = commit
+  ri = rebase -i HEAD~10
+  sh = !git-sh
+  ro = !git fetch origin && git reset --hard origin/master
+
+<% if @email && @fullname %>
+[user]
+  email = <%= @email %>
+  name  = <%= @fullname %>
+<% end %>
+
+<% if @github_user && @github_token %>
+[github]
+  user  = <%= @github_user %>
+  token = <%= @github_token %>
+<% end %>

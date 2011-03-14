@@ -1,0 +1,22 @@
+PATH="/usr/local/bin:/usr/local/share/npm/bin:/usr/local/sbin:$PATH"; export PATH
+MANPATH="/usr/local/share/man:$MANPATH"; export MANPATH
+CFLAGS="-I/usr/local/include"; export CFLAGS
+CPPFLAGS="-I/usr/local/include"; export CPPFLAGS
+CXXFLAGS="-I/usr/local/include"; export CXXFLAGS
+LDFLAGS="-L/usr/local/lib"; export LDFLAGS
+NODE_PATH="/usr/local/lib/node"; export NODE_PATH
+
+export CONFIGURE_ARGS="--with-cflags='$CFLAGS' --with-ldflags='$LDFLAGS'"
+
+export rvm_path=/usr/local/.rvm
+if [[ -s /usr/local/.rvm/scripts/rvm ]] ; then
+  source /usr/local/.rvm/scripts/rvm
+fi
+
+if [[ -d /usr/local/Cellar/python/2.7/bin ]]; then
+  export PATH=~/usr/local/Cellar/python/2.7/bin:$PATH
+fi
+
+if [[ -f ~/.megalodon.profile.custom ]]; then
+  source ~/.megalodon.profile.custom
+fi

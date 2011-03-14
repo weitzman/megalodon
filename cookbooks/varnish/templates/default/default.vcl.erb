@@ -1,0 +1,267 @@
+# This is a basic VCL configuration file for varnish.  See the vcl(7)
+# man page for details on VCL syntax and semantics.
+# 
+# Default backend definition.  Set this to point to your content
+# server.
+# 
+#
+
+<% node[:varnish][:backend_hosts].each do |host| %>
+backend <%= host %> {
+  .host = "<%= host %>";
+  .port = "8080";
+  .connect_timeout = 600s;
+  .first_byte_timeout = 600s;
+  .between_bytes_timeout = 600s;
+  .probe = {
+    #.url = "/";
+    .url = "/sites/default/alive.txt";
+    .interval = 5s;
+    .timeout = 30 s;
+    .window = 5;
+    .threshold = 3;
+  }
+}
+<% end %>
+
+director drupal_pool round-robin {
+<% node[:varnish][:backend_hosts].each do |host| %>
+  {
+    .backend = <%= host %>;
+  }
+<% end %>
+}
+
+
+sub vcl_recv {
+  
+  #if (req.http.host ~ "^(www.)?welcom.demo$") {
+    set req.backend = drupal_pool;
+  #}
+
+  # Add the X-Forwarded-For header (Varnish <2.1 used
+  # to do this automatically but not anymore)
+  if (req.http.X-Forwarded-For) {
+    set req.http.X-Forwarded-For =
+    req.http.X-Forwarded-For ", " client.ip;
+  } else {
+    set req.http.X-Forwarded-For = client.ip;
+  }
+
+  # Grace: Avoid thundering herd when an object expires by serving
+  # expired stale object during the next N seconds while one request 
+  # is made to the backend for that object.
+  set req.grace = 120s;
+  
+  
+  # Varnish doesn't support Range requests: needs to be piped
+  if (req.http.Range) {
+    return(pipe);
+  }
+
+  # Don't check cache for POSTs and various other HTTP request types
+  if (req.request != "GET" && req.request != "HEAD") {
+    return(pass);
+  }
+
+  # Normalize Accept-Encoding to reduce cache variations per url
+  if (req.http.Accept-Encoding) {
+      # No point in compressing these
+    if (req.url ~ "\.(jpg|png|gif|gz|tgz|bz2|tbz|mp3|ogg)$") {
+      remove req.http.Accept-Encoding;
+      # MSIE 6 bug workaround
+    } elsif(req.http.User-Agent ~ "MSIE 6") {
+      unset req.http.Accept-Encoding;
+    } elsif (req.http.Accept-Encoding ~ "gzip") {
+      set req.http.Accept-Encoding = "gzip";
+    } elsif (req.http.Accept-Encoding ~ "deflate") {
+      set req.http.Accept-Encoding = "deflate";
+    } else {
+      # unkown algorithm
+      remove req.http.Accept-Encoding;
+    }
+  }
+
+
+  # Cookie Cache Bypass Drupal module (Pressflow): Don't check cache for 
+  # any user that just submitted a content form within the past 5 to 10 
+  # minutes (depending on Drupal's cache_lifetime setting). 
+  if(req.http.cookie ~ "NO_CACHE") {
+    return(pass);
+  }
+  
+  # Don't check cache if the Drupal session cookie is set.
+  # Pressflow pages don't send this cookie to anon users.
+  if(req.http.cookie ~ "SESS") {
+    # ...except for /files we try cache regardless of the SESS cookie
+    if ((req.url !~ "^/files/") && (req.url !~ "^/sites/[^/]+/files/") 
+    || (req.url ~ "^/sites/[^/]+/files/community")) 
+    && (req.url !~ "\.(jpg|png|gif|jpeg|js|css|swf)$")) {
+      return(pass);
+    }
+  }
+
+  # Enforce no-cookie-vary: Hide the Cookie header prior 
+  # to vcl_hash, then restore Cookie if we get to vcl_miss.
+  if (req.http.Cookie) {
+    set req.http.X-Acquia-Cookie = req.http.Cookie;
+    unset req.http.Cookie;
+  }
+
+  ## Remove a ";" prefix, if present.
+  set req.http.Cookie = regsub(req.http.Cookie, "^;\s*", "");
+  ## Remove empty cookies.
+  if (req.http.Cookie ~ "^\s*$") {
+    unset req.http.Cookie;
+  }
+  # Default cache check
+  return(lookup);
+}
+
+# 
+# Below is a commented-out copy of the default VCL logic.  If you
+# redefine any of these subroutines, the built-in logic will be
+# appended to your code.
+# 
+# sub vcl_recv {
+#     if (req.http.x-forwarded-for) {
+# 	set req.http.X-Forwarded-For =
+# 	    req.http.X-Forwarded-For ", " client.ip;
+#     } else {
+# 	set req.http.X-Forwarded-For = client.ip;
+#     }
+#     if (req.request != "GET" &&
+#       req.request != "HEAD" &&
+#       req.request != "PUT" &&
+#       req.request != "POST" &&
+#       req.request != "TRACE" &&
+#       req.request != "OPTIONS" &&
+#       req.request != "DELETE") {
+#         /* Non-RFC2616 or CONNECT which is weird. */
+#         return (pipe);
+#     }
+#     if (req.request != "GET" && req.request != "HEAD") {
+#         /* We only deal with GET and HEAD by default */
+#         return (pass);
+#     }
+#     if (req.http.Authorization || req.http.Cookie) {
+#         /* Not cacheable by default */
+#         return (pass);
+#     }
+#     return (lookup);
+# }
+# 
+# sub vcl_pipe {
+#     # Note that only the first request to the backend will have
+#     # X-Forwarded-For set.  If you use X-Forwarded-For and want to
+#     # have it set for all requests, make sure to have:
+#     # set req.http.connection = "close";
+#     # here.  It is not set by default as it might break some broken web
+#     # applications, like IIS with NTLM authentication.
+#     return (pipe);
+# }
+# 
+# sub vcl_pass {
+#     return (pass);
+# }
+# 
+# sub vcl_hash {
+#     set req.hash += req.url;
+#     if (req.http.host) {
+#         set req.hash += req.http.host;
+#     } else {
+#         set req.hash += server.ip;
+#     }
+#     return (hash);
+# }
+# 
+# sub vcl_hit {
+#     if (!obj.cacheable) {
+#         return (pass);
+#     }
+#     return (deliver);
+# }
+# 
+sub vcl_miss {
+  # Restore the original incoming Cookie  
+  if (req.http.X-Acquia-Cookie) {
+    set bereq.http.Cookie = req.http.X-Acquia-Cookie;
+    unset bereq.http.X-Acquia-Cookie;
+  } 
+}
+
+# Backend response: Determine whether to cache each backend response 
+sub vcl_fetch {
+
+  # Don't cache errors, redirects, HEAD, and POST responses.
+  if (beresp.status >= 300 || !beresp.cacheable || req.request != "GET") {
+    return(pass);
+  }
+
+  # Respect explicit no-cache headers
+  if(beresp.http.Pragma ~ "no-cache" ||
+     beresp.http.Cache-Control ~ "no-cache") {
+     ## Commenting this out for now because for some reason, imagecache images of the 
+     ## currently logged in user were set to Cache-Control:max-age=1209600, private, must-revalidate, 
+     ## which was causing them to be broken upon re-login.
+     #beresp.http.Cache-Control ~ "no-cache" ||
+  #   beresp.http.Cache-Control ~ "private") { 
+       return(pass);
+  }
+  
+  # NOTE: xmlrpc.php requests are not cached because they're POSTs
+
+  # Don't cache if Drupal session cookie is set
+  # Note: Pressflow doesn't send SESS cookies to anon users
+  if(beresp.http.Set-Cookie ~ "SESS") {
+    return(pass);
+  }
+  
+  # Grace: Avoid thundering herd when an object expires by serving
+  # expired stale object during the next N seconds while one request 
+  # is made to the backend for that object.
+  set beresp.grace = 120s;
+
+  # Cache anything else. Returning nothing here would fall-through
+  # to Varnish's default cache store policies.
+  return(deliver);
+}
+
+sub vcl_deliver {
+  # Add an X-Cache diagnostic header
+  if (obj.hits > 0) {
+    set resp.http.X-Cache = "HIT";
+    set resp.http.X-Cache-Hits = obj.hits;
+    # Don't echo cached Set-Cookie headers
+    unset resp.http.Set-Cookie;
+  } else {
+    set resp.http.X-Cache = "MISS";
+  }
+  return(deliver);
+}
+ 
+# sub vcl_error {
+#     set obj.http.Content-Type = "text/html; charset=utf-8";
+#     synthetic {"
+# <?xml version="1.0" encoding="utf-8"?>
+# <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+#  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+# <html>
+#   <head>
+#     <title>"} obj.status " " obj.response {"</title>
+#   </head>
+#   <body>
+#     <h1>Error "} obj.status " " obj.response {"</h1>
+#     <p>"} obj.response {"</p>
+#     <h3>Guru Meditation:</h3>
+#     <p>XID: "} req.xid {"</p>
+#     <hr>
+#     <address>
+#        <a href="http://www.varnish-cache.org/">Varnish cache server</a>
+#     </address>
+#   </body>
+# </html>
+# "};
+#     return (deliver);
+# }
+
