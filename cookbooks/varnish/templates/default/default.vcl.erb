@@ -6,6 +6,7 @@
 # 
 #
 
+<% unless node[:varnish][:backend_hosts].empty? %>
 <% node[:varnish][:backend_hosts].each do |host| %>
 backend <%= host %> {
   .host = "<%= host %>";
@@ -31,14 +32,15 @@ director drupal_pool round-robin {
   }
 <% end %>
 }
+<% else %>
+backend default {
+  .host = "<%= node[:varnish][:backend_default][:host] %>";
+  .port = "<%= node[:varnish][:backend_default][:port] %>";
+}
+<% end %>
 
 
 sub vcl_recv {
-  
-  #if (req.http.host ~ "^(www.)?welcom.demo$") {
-    set req.backend = drupal_pool;
-  #}
-
   # Add the X-Forwarded-For header (Varnish <2.1 used
   # to do this automatically but not anymore)
   if (req.http.X-Forwarded-For) {
@@ -89,13 +91,12 @@ sub vcl_recv {
   if(req.http.cookie ~ "NO_CACHE") {
     return(pass);
   }
-  
+
   # Don't check cache if the Drupal session cookie is set.
   # Pressflow pages don't send this cookie to anon users.
   if(req.http.cookie ~ "SESS") {
     # ...except for /files we try cache regardless of the SESS cookie
-    if ((req.url !~ "^/files/") && (req.url !~ "^/sites/[^/]+/files/") 
-    || (req.url ~ "^/sites/[^/]+/files/community")) 
+    if ((req.url !~ "^/files/") && (req.url !~ "^/sites/[^/]+/files/")
     && (req.url !~ "\.(jpg|png|gif|jpeg|js|css|swf)$")) {
       return(pass);
     }
