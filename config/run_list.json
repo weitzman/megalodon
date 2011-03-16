@@ -1,6 +1,5 @@
 {
-  "recipes": [
-     "homebrew", "homebrew::misc", "mysql::mariadb", "php",
-     "php::module_apc", "php::module_memcached", "php::module_xdebug", "xhprof", "solr", "varnish"
+  "run_list": [
+     "homebrew", "homebrew::misc", "role[web_server]", "solr", "varnish", "jenkins"
   ]
 }

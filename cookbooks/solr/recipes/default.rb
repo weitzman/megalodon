@@ -15,10 +15,4 @@
 # limitations under the License.
 #
 
-include_recipe "php"
 homebrew "solr"
-=begin
-  template "/usr/local/etc/php5/conf.d/xhprof.ini" do
-    source "xhprof.ini.erb"
-  end
-=end
