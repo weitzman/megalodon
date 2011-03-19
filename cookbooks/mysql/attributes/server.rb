@@ -21,7 +21,7 @@
 
 #set_unless[:mysql][:server_root_password] = secure_password
 #set_unless[:mysql][:server_repl_password] = secure_password
-default[:mysql][:bind_address]         = ipaddress
+default[:mysql][:bind_address]         = "127.0.0.1"
 default[:mysql][:datadir]              = "/usr/local/var/mysql"
 
 default[:mysql][:tunable][:back_log]             = "128"
