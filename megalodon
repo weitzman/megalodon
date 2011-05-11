@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+require "rubygems"
+require "thor"
+
+class MegaladonCommand < Thor
+  desc "install", "Runs chef-solo"
+  def install
+    puts "Starting chef-solo run"
+    system("chef-solo -j config/run_list.json -c config/solo.rb")
+  end
+end
+
+MegaladonCommand.start
