@@ -10,9 +10,17 @@ require root + '/providers/homebrew'
 require 'etc'
 
 
-homebrew "php" do 
+homebrew "php" do
   action :install
-  options "--with-mysql --with-pgsql --with-mssql --with-imap --with-apache"
+  options "--with-mysql --with-pgsql --with-mssql --with-imap --with-apache --with-cgi"
+
+end
+
+bash "Fix the default PEAR permissions and config" do
+  code <<-EOS
+    chmod -R ug+w $(brew --prefix)/lib/php
+    pear config-set php_ini $(brew --prefix)/etc/php5/php.ini
+  EOS
 end
 
 FileUtils.mkdir_p(node[:php][:scan_dir]) unless File.exists?(node[:php][:scan_dir])
