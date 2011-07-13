@@ -1,13 +1,24 @@
 #!/usr/bin/env ruby
-require "rubygems"
-require "thor"
 
-class MegaladonCommand < Thor
-  desc "install", "Runs chef-solo"
-  def install
-    puts "Starting chef-solo run"
-    system("chef-solo -j config/run_list.json -c config/solo.rb")
+begin
+  require "rubygems"
+  require 'chef'
+  require 'json'
+  require "thor"
+
+  class MegaladonCommand < Thor
+    desc "install", "Runs chef-solo"
+    def install
+      puts "Starting chef-solo run"
+      system("chef-solo -j config/run_list.json -c config/solo.rb")
+    end
   end
-end
 
-MegaladonCommand.start
+  MegaladonCommand.start
+
+rescue LoadError => e
+  puts e.message
+  puts "You don't seem to have chef, installing it for you"
+  system("gem install chef --no-rdoc --no-ri")
+  puts "I had to install chef for you, please rerun 'megalodon install'"
+end
