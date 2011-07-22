@@ -24,3 +24,8 @@ bash "Fix the default PEAR permissions and config" do
 end
 
 FileUtils.mkdir_p(node[:php][:scan_dir]) unless File.exists?(node[:php][:scan_dir])
+
+template "#{node['php']['conf_dir']}/php.ini" do
+  source "php.ini.erb"
+  mode "0644"
+end

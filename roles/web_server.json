@@ -9,7 +9,6 @@
     "recipe[php::module_apc]",
     "recipe[php::module_memcached]",
     "recipe[php::module_xdebug]",
-    "recipe[php::cgi]",
     "recipe[xhprof]"
   ],
   "description": "",
