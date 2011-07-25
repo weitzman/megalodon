@@ -26,7 +26,7 @@ end
 bash "post-install" do
   code <<-EOH
   (mysql_install_db)
-  (cp /usr/local/Cellar/mariadb/5.2.4/com.mysql.mysqld.plist ~/Library/LaunchAgents)
+  (cp /usr/local/Cellar/mariadb/5.*/com.mysql.mysqld.plist ~/Library/LaunchAgents)
   (launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist)
   EOH
 end

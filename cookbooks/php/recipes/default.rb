@@ -12,7 +12,7 @@ require 'etc'
 
 homebrew "php" do
   action :install
-  options "--with-mysql --with-pgsql --with-mssql --with-imap --with-apache --with-cgi"
+  options "--with-mysql --with-pgsql --with-mssql --with-imap --with-apache"
 
 end
 
