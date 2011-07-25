@@ -9,6 +9,8 @@ begin
   class MegaladonCommand < Thor
     desc "install", "Runs chef-solo"
     def install
+      puts "Copying custom forumulas"
+      system("cp formulas/* /usr/local/Library/Formula/")
       puts "Starting chef-solo run"
       system("chef-solo -j config/run_list.json -c config/solo.rb")
     end
@@ -19,6 +21,7 @@ begin
 rescue LoadError => e
   puts e.message
   puts "You don't seem to have chef, installing it for you"
-  system("gem install chef --no-rdoc --no-ri")
+  sudo = File.writable?(%x[gem environment| grep "INSTALLATION DIRECTORY"| awk -F':' '{print $2}'].strip) ? "" : "sudo "
+  system("#{sudo} gem install chef --no-rdoc --no-ri")
   puts "I had to install chef for you, please rerun 'megalodon install'"
 end
