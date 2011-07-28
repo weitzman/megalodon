@@ -1,5 +1,5 @@
 {
   "run_list": [
-     "welcom::drush_workers"
+     "homebrew", "homebrew::misc", "role[web_server]", "solr", "varnish", "jenkins", "mongodb", "php::module_mongo", "phpunit"
   ]
 }
