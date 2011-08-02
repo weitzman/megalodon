@@ -9,7 +9,10 @@ require root + '/resources/homebrew'
 require root + '/providers/homebrew'
 require 'etc'
 
-homebrew "apc"
+homebrew "apc" do
+  action :install
+  options "--HEAD"
+end
 
 template "/usr/local/etc/php5/conf.d/apc.ini" do
   source "mods/apc.ini.erb"
