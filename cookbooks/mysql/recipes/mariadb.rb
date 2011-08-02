@@ -25,10 +25,11 @@ end
 
 bash "post-install" do
   code <<-EOH
-  (mysql_install_db)
-  (cp /usr/local/Cellar/mariadb/5.*/com.mysql.mysqld.plist ~/Library/LaunchAgents)
-  (launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist)
+    (mysql_install_db)
+    (cp /usr/local/Cellar/mariadb/5.*/com.mysql.mysqld.plist ~/Library/LaunchAgents)
+    (launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist)
   EOH
+  not_if "mysql -e 'SHOW DATABASES'| grep -P '^test|^mysql'"
 end
 
 logdir = File.dirname(node[:mysql][:tunable][:log_slow_queries])
