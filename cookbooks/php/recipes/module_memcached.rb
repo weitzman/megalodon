@@ -5,7 +5,7 @@
 #
 include_recipe "memcached"
 
-homebrew "php-memcached"
+package "php-memcached"
 
 template "/usr/local/etc/php5/conf.d/memcached.ini" do
   source "mods/memcached.ini.erb"

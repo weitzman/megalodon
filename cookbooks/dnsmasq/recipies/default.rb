@@ -1,7 +1,7 @@
 # Cookbook Name:: dnsmasq
 # Recipe:: default
 #
-homebrew "dnsmasq"
+package "dnsmasq"
 
 bash "copy-conf" do
   code <<-EOS

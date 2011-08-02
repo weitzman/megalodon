@@ -34,7 +34,7 @@ when "debian","ubuntu"
   package "php5-xhprof"
 
 when "mac_os_x"
-  homebrew "xhprof"
+  package "xhprof"
 
   template "/usr/local/etc/php5/conf.d/xhprof.ini" do
     source "xhprof.ini.erb"

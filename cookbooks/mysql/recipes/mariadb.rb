@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-homebrew "mariadb"
+package "mariadb"
 
 template "/usr/local/etc/my.cnf" do
   source "my.cnf.erb"

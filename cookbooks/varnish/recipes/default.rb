@@ -1,7 +1,7 @@
 # Cookbook Name:: varnish
 # Recipe:: default
 
-homebrew "varnish"
+package "varnish"
 
 template "/usr/local/etc/varnish/default.vcl" do
   source "default.vcl.erb"

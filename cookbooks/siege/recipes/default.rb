@@ -1,4 +1,4 @@
 # Cookbook Name:: siege
 # Recipe:: default
 
-homebrew "siege"
+package "siege"

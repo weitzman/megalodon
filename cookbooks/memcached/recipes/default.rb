@@ -5,5 +5,5 @@
 # Copyright 2010, atmos.org
 #
 
-homebrew "memcached"
-homebrew "libmemcached"
+package "memcached"
+package "libmemcached"

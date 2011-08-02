@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-homebrew "mysql"
+package "mysql"
 
 template "/usr/local/etc/my.cnf" do
   source "my.cnf.erb"

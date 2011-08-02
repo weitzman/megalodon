@@ -15,4 +15,4 @@
 # limitations under the License.
 #
 
-homebrew "solr"
+package "solr"

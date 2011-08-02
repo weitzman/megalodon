@@ -5,4 +5,4 @@
 # Copyright 2010, atmos.org
 #
 
-homebrew "erlang"
+package "erlang"

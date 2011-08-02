@@ -1,5 +1,5 @@
 {
   "run_list": [
-     "homebrew", "homebrew::misc", "role[web_server]", "solr", "varnish", "jenkins", "mongodb", "php::module_mongo", "phpunit"
+     "megalodon", "megalodon::misc", "role[web_server]", "solr", "varnish", "jenkins", "mongodb", "php::module_mongo", "phpunit"
   ]
 }

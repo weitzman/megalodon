@@ -1,7 +1,7 @@
 # Cookbook Name:: mongodb
 # Recipe:: default
 
-homebrew "mongodb"
+package "mongodb"
 
 bash "copy plist firsttime" do
   code <<-EOS

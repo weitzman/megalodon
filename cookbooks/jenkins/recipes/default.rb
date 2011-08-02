@@ -1,7 +1,7 @@
 # Cookbook Name:: jenkins
 # Recipe:: default
 #
-homebrew "jenkins"
+package "jenkins"
 
 bash "copy plist firsttime" do
   code <<-EOS

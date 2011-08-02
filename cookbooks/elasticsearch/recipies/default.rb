@@ -1,7 +1,7 @@
 # Cookbook Name:: elasticsearch
 # Recipe:: default
 #
-homebrew "eslasticsearch"
+package "eslasticsearch"
 
 bash "copy plist firsttime" do
   code <<-EOS
