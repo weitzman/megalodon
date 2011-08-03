@@ -1,0 +1,19 @@
+{
+  "name": "web_server",
+  "default_attributes": {
+  },
+  "json_class": "Chef::Role",
+  "run_list": [
+    "recipe[nginx]",
+    "recipe[mysql::mariadb]",
+    "recipe[php::fpm]",
+    "recipe[php::module_apc]",
+    "recipe[php::module_memcached]",
+    "recipe[php::module_xdebug]",
+    "recipe[xhprof]"
+  ],
+  "description": "",
+  "chef_type": "role",
+  "override_attributes": {
+  }
+}

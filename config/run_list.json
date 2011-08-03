@@ -1,5 +1,5 @@
 {
   "run_list": [
-     "megalodon", "megalodon::misc", "role[web_server]", "solr", "varnish", "jenkins", "mongodb", "php::module_mongo", "phpunit"
+     "megalodon", "megalodon::misc", "role[nginx_web_server]", "solr", "varnish", "mongodb", "php::module_mongo", "phpunit"
   ]
 }
