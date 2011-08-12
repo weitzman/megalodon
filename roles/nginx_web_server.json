@@ -1,8 +1,12 @@
 {
-  "name": "web_server",
+  "name": "nginx_web_server",
   "default_attributes": {
   },
   "json_class": "Chef::Role",
+  "default": {
+  },
+  "override": {
+  },
   "run_list": [
     "recipe[nginx]",
     "recipe[mysql::mariadb]",
