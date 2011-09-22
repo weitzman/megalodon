@@ -9,7 +9,7 @@ directory "#{ENV['HOME']}/.megalodon" do
   action :create
 end
 
-directory "#{ENV['HOME']}/LaunchAgents" do
+directory "#{ENV['HOME']}/Library/LaunchAgents" do
   action :create
 end
 
