@@ -6,7 +6,8 @@
 
 package "php" do
   action :install
-  options "--with-mysql --with-pgsql --with-mssql --with-imap --with-apache --with-cgi"
+  #options "--with-mysql --with-pgsql --with-mssql --with-imap --with-apache --with-cgi"
+  options "--with-mysql --with-pgsql --with-imap --with-apache --with-cgi"
 end
 
 bash "Add php to apache conf" do
