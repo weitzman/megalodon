@@ -20,8 +20,9 @@ end
 
 bash "Fix the default PEAR permissions and config" do
   code <<-EOS
-    chmod -R ug+w $(brew --prefix)/lib/php
-    pear config-set php_ini $(brew --prefix)/etc/php5/php.ini
+    chmod -R ug+w $(brew --prefix php)/lib/php
+    pear config-set php_ini $(brew --prefix php)/etc/php5/php.ini
+    pecl config-set php_suffix /$(brew --prefix php| awk -F'/' '{print $6}')/bin/php
   EOS
 end
 
