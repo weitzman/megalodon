@@ -1,10 +1,10 @@
-# Cookbook Name:: varnish
+# Cookbook Name:: maatkit
 # Recipe:: default
 
 
-#sudo -H cpan DBI::DBD DBD::mysql
 bash "install DBD::mysql" do
   "sudo perl -MCPAN -e 'install Bundle::DBD::mysql'"
+  not_if "/usr/bin/env perl -e 'use DBD::mysql'"
 end
 
 package "maatkit"
