@@ -23,18 +23,16 @@ channels.each do |chan|
   end
 end
 
-php_pear "HTTP_Request2" do
-  preferred_state "beta"
-  action :install
-end
-
-php_pear "XML_RPC2" do
-  action :install
+php_pear "PEAR" do
+  cur_version = `pear -V| head -1| awk -F': ' '{print $2}'`
+  action :upgrade
+  # This feels super ghetto. Open to improvements.
+  not_if { Gem::Version.new(cur_version) > Gem::Version.new('1.9.0') }
 end
 
 php_pear "PHPUnit" do
   channel "phpunit"
-  version "3.5.15"
+  version "3.6.4"
   action :install
 end
 
