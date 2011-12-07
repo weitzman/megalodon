@@ -3,20 +3,11 @@
 begin
   require "rubygems"
   require 'chef'
-  require 'json'
-  require "thor"
 
-  class MegaladonCommand < Thor
-    desc "install", "Runs chef-solo"
-    def install
-      puts "Copying custom forumulas"
-      system("cp formulas/* /usr/local/Library/Formula/")
-      puts "Starting chef-solo run"
-      system("chef-solo -j config/run_list.json -c config/solo.rb")
-    end
-  end
-
-  MegaladonCommand.start
+  puts "Copying custom forumulas"
+  system("cp formulas/* /usr/local/Library/Formula/")
+  puts "Starting chef-solo run"
+  system("chef-solo -j config/run_list.json -c config/solo.rb")
 
 rescue LoadError => e
   puts e.message
