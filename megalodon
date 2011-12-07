@@ -5,10 +5,15 @@ begin
   require 'chef'
 
   cwd = Dir.pwd
+  gem_path = `gem env| grep "EXECUTABLE DIRECTORY"| awk -F': ' '{print $2}'`.strip
+  unless File.exists?("#{gem_path}/chef-solo")
+    raise "Cannot find chef-solo at #{gem_path}/chef-solo}"
+  end
+
   puts "Copying custom forumulas"
   system("cp #{cwd}/formulas/* /usr/local/Library/Formula/")
   puts "Starting chef-solo run"
-  system("chef-solo -j #{cwd}/config/run_list.json -c #{cwd}/config/solo.rb")
+  system("#{gem_path}/chef-solo -j #{cwd}/config/run_list.json -c #{cwd}/config/solo.rb")
 
 rescue LoadError => e
   puts e.message
@@ -17,3 +22,4 @@ rescue LoadError => e
   system("#{sudo} gem install chef --no-rdoc --no-ri")
   puts "I had to install chef for you, please rerun 'megalodon install'"
 end
+
