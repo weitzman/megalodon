@@ -4,10 +4,11 @@ begin
   require "rubygems"
   require 'chef'
 
+  cwd = Dir.pwd
   puts "Copying custom forumulas"
-  system("cp formulas/* /usr/local/Library/Formula/")
+  system("cp #{cwd}/formulas/* /usr/local/Library/Formula/")
   puts "Starting chef-solo run"
-  system("chef-solo -j config/run_list.json -c config/solo.rb")
+  system("chef-solo -j #{cwd}/config/run_list.json -c #{cwd}/config/solo.rb")
 
 rescue LoadError => e
   puts e.message
