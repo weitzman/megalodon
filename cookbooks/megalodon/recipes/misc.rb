@@ -9,6 +9,6 @@
 #require root + '/providers/homebrew'
 include_recipe 'homebrew'
 
-%w(bash-completion tig ack coreutils sqlite gist wget hub fortune proctools markdown ctags).each do |pkg|
+%w(bash-completion coreutils sqlite wget markdown ctags).each do |pkg|
   package pkg
 end
