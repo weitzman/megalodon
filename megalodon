@@ -3,6 +3,7 @@
 begin
   require "rubygems"
   require 'chef'
+  require 'highline/import'
 
   cwd = Dir.pwd
   gem_path = `gem env| grep "EXECUTABLE DIRECTORY"| awk -F': ' '{print $2}'`.strip
@@ -22,4 +23,3 @@ rescue LoadError => e
   system("#{sudo} gem install chef --no-rdoc --no-ri")
   puts "I had to install chef for you, please rerun 'megalodon install'"
 end
-

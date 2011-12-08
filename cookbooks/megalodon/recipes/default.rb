@@ -2,10 +2,37 @@
 # Cookbook Name:: megalodon
 # Recipe:: default
 #
+require 'highline/import'
 
-include_recipe 'homebrew'
+# This feels super ghetto to do this in a recipe, but I don't
+# know of a better place to put it.
+def get_sudo_password(prompt="Enter Password")
+   ask(prompt) {|q| q.echo = false}
+end
+
+prompt = "
+Your password is needed so that we can run a couple commands as sudo to work
+with OSX's built in apache, but we promise that's it.
+
+Please enter your password:"
+
+node[:sudo_pass] = get_sudo_password(prompt)
 
 directory "#{ENV['HOME']}/.megalodon" do
+  action :create
+end
+
+brew_prefix = `brew --prefix`.strip
+
+directory "#{brew_prefix}/etc/megalodon" do
+  action :create
+end
+
+directory "#{brew_prefix}/var/www" do
+  action :create
+end
+
+directory "#{ENV['HOME']}/.megalodon/data_bags" do
   action :create
 end
 

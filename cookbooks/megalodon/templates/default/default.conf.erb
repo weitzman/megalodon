@@ -1,0 +1,26 @@
+NameVirtualHost *:80
+
+<VirtualHost *:80>
+  ServerName "<%= @params[:server_name] %>"
+  DocumentRoot "<%= @params[:docroot] %>"
+  RewriteEngine On
+
+  <Directory "<%= @params[:docroot] %>">
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/css
+  </Directory>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+</VirtualHost>
+

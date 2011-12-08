@@ -9,7 +9,8 @@
     "recipe[php::module_apc]",
     "recipe[php::module_memcached]",
     "recipe[php::module_xdebug]",
-    "recipe[xhprof]"
+    "recipe[xhprof]",
+    "recipe[megalodon::apache_vhosts]"
   ],
   "description": "",
   "chef_type": "role",

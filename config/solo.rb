@@ -15,5 +15,6 @@ cache_options      ({ :path => "#{megalodon_root}/cache/checksums", :skip_expire
 #recipe_url   "http://chef.example.com/cookbooks.tar.gz"
 cookbook_path File.expand_path(File.join(File.dirname(__FILE__), "..", "cookbooks"))
 role_path     File.expand_path(File.join(File.dirname(__FILE__), "..", "roles"))
+data_bag_path "#{ENV['HOME']}/.megalodon/data_bags"
 
 Mixlib::Log::Formatter.show_time = false
