@@ -14,7 +14,7 @@ if [[ -s /usr/local/.rvm/scripts/rvm ]] ; then
 fi
 
 if [[ -d /usr/local/Cellar/php/<%= node['megalodon']['php_version'] %>/bin ]]; then
-  export PATH=/usr/local/Cellar/php/<%= node['megalodon']['php_version'] %>/bin:$PATH
+  export PATH=$PATH:/usr/local/Cellar/php/<%= node['megalodon']['php_version'] %>/bin
 fi
 
 if [[ -f ~/.megalodon.profile.custom ]]; then
