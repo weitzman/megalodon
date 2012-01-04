@@ -4,6 +4,22 @@ begin
   require "rubygems"
   require 'chef'
   require 'highline/import'
+  require 'optparse'
+
+  optparse = OptionParser.new
+
+  # Parse the command line.
+  optparse.parse!
+
+  runlist = case
+  when ARGV[0] == 'update_vhosts'
+    runlist = 'run_vhosts.json'
+  when ARGV[0] == 'help'
+    puts "Usage: megalodon [install|update_vhosts|help]"
+    exit
+  else
+    runlist = 'run_list.json'
+  end
 
   cwd = Dir.pwd
   gem_path = `gem env| grep "EXECUTABLE DIRECTORY"| awk -F': ' '{print $2}'`.strip
@@ -14,7 +30,7 @@ begin
   puts "Copying custom forumulas"
   system("cp #{cwd}/formulas/* /usr/local/Library/Formula/")
   puts "Starting chef-solo run"
-  system("#{gem_path}/chef-solo -j #{cwd}/config/run_list.json -c #{cwd}/config/solo.rb")
+  system("#{gem_path}/chef-solo -j #{cwd}/config/#{runlist} -c #{cwd}/config/solo.rb")
 
 rescue LoadError => e
   puts e.message
