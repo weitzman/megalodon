@@ -6,19 +6,25 @@ begin
   require 'highline/import'
   require 'optparse'
 
-  optparse = OptionParser.new
+  opt_parser = OptionParser.new do |opt|
+    opt.banner = "Usage: megalodon {-h} [install|update_vhosts]"
+    opt.on("-h","--help","help") do
+      puts opt_parser
+      exit
+    end
+  end
 
   # Parse the command line.
-  optparse.parse!
+  opt_parser.parse!
 
-  runlist = case
-    when ARGV[0] == 'update_vhosts'
+  case ARGV[0]
+    when 'update_vhosts'
       runlist = 'run_vhosts.json'
-    when ARGV[0] == 'help'
-      puts "Usage: megalodon [install|update_vhosts|help]"
-      exit
-    else
+    when 'install', nil
       runlist = 'run_list.json'
+    else
+      puts opt_parser
+      exit
   end
 
   cwd = Dir.pwd
