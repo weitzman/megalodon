@@ -18,6 +18,8 @@ Run megalodon:
 
 ## Usage
 
+### General
+
 Megalodon uses OSX's built in apache, so you can restart apache like so:
 
     sudo /usr/sbin/apachectl restart
@@ -27,6 +29,18 @@ Everything else that's installed with homebrew should have a plist in ~/Library/
 For example, you'd restart mysql like so:
 
     lunchy restart mysql
+
+### Managing virtual hosts
+
+You will need to edit /etc/hosts as per usual; To add a new virtual host, add a new .json file in:
+
+    ~/.megalodon/data_bags/vhosts
+
+To re-generate the apache confs after modifying/adding vhosts:
+
+    megalodon update_vhosts
+
+Then restart apache as above.
 
 ## Other notes
 
