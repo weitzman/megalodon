@@ -5,6 +5,7 @@ begin
   require 'chef'
   require 'highline/import'
   require 'optparse'
+  require 'fileutils'
 
   opt_parser = OptionParser.new do |opt|
     opt.banner = "Usage: megalodon {-h} [install|update_vhosts]"
@@ -26,6 +27,11 @@ begin
       puts opt_parser
       exit
   end
+
+  # Create the databag directory here since it appears that the chef-solo run
+  # will fail if it doesn't already exist. Wish there was a better way to do this…
+  directory_name = "#{ENV['HOME']}/.megalodon/data_bags/vhosts"
+  FileUtils.mkdir_p(directory_name) unless FileTest::directory?(directory_name)
 
   cwd = Dir.pwd
   gem_path = `gem env| grep "EXECUTABLE DIRECTORY"| awk -F': ' '{print $2}'`.strip
