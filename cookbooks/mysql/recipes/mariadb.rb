@@ -26,8 +26,8 @@ end
 bash "post-install" do
   code <<-EOH
     (mysql_install_db)
-    (cp /usr/local/Cellar/mariadb/5.*/com.mysql.mysqld.plist ~/Library/LaunchAgents)
-    (launchctl load -w ~/Library/LaunchAgents/com.mysql.mysqld.plist)
+    (cp /usr/local/Cellar/mariadb/5.*/homebrew.mxcl.mariadb.plist ~/Library/LaunchAgents)
+    (launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mariadb.plist)
   EOH
   not_if "mysql -e 'SHOW DATABASES'| grep -P '^test|^mysql'"
 end
