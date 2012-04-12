@@ -3,6 +3,10 @@
 
 package "varnish"
 
+directory "#{brew_prefix}/etc/varnish" do
+  action :create
+end
+
 template "/usr/local/etc/varnish/default.vcl" do
   source "default.vcl.erb"
   #owner "root"
