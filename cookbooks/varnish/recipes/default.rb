@@ -3,6 +3,7 @@
 
 package "varnish"
 
+brew_prefix = `brew --prefix`.strip
 directory "#{brew_prefix}/etc/varnish" do
   action :create
 end
