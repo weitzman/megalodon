@@ -5,7 +5,6 @@
 
 package "apc" do
   action :install
-  options "--HEAD"
 end
 
 template "/usr/local/etc/php5/conf.d/apc.ini" do
