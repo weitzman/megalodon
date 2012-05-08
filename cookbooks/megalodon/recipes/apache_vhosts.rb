@@ -14,9 +14,12 @@ template "#{ENV['HOME']}/.megalodon/data_bags/vhosts/default.json" do
   action :create
 end
 
-bash "Add megalodon apache conf dir" do
-  code <<-EOS
-  echo "#{node[:sudo_pass]}" | sudo -S sh -c "echo 'Include /usr/local/etc/megalodon/apache_confs/*.conf' >> /etc/apache2/httpd.conf"
+# Update built-in Apache with administrative privleges.
+# TODO - Use Ruby auth bindings instead of AppleScript.
+# {Ruby OSX Auth}[http://ruby-osxauth.rubyforge.org/]
+execute "Include conf in Mac Apache with admin privileges" do
+  command <<-EOS
+  /usr/bin/osascript -e 'do shell script "echo \\"Include /usr/local/etc/megalodon/apache_confs/*.conf\\" >> /etc/apache2/httpd.conf" with administrator privileges'
   EOS
   not_if "grep '^Include /usr/local/etc/megalodon/apache_confs' /etc/apache2/httpd.conf"
 end
