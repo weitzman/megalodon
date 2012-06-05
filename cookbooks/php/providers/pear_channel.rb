@@ -85,5 +85,7 @@ def exists?
     true
   rescue Chef::Exceptions::ShellCommandFailed
     false
+  rescue Mixlib::ShellOut::ShellCommandFailed
+    false
   end
 end
