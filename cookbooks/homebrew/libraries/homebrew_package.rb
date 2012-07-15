@@ -47,7 +47,13 @@ class Chef
         end
 
         def candidate_version
-          get_version_from_command("brew info #{@new_resource.package_name} | awk '/^#{@new_resource.package_name} / { print $2 }'")
+          brew_version = %x[brew --version].strip
+          if Gem::Version.new(brew_version) >= Gem::Version.new('0.9.2')
+            command = "brew info #{@new_resource.package_name} | awk '/^#{@new_resource.package_name}:/ { print $3 }'"
+          else
+            command = "brew info #{@new_resource.package_name} | awk '/^#{@new_resource.package_name} / { print $2 }'"
+          end
+          get_version_from_command(command)
         end
 
         def get_version_from_command(command)
