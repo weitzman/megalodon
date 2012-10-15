@@ -36,6 +36,7 @@ vhosts.each do |vhost_name|
   megalodon_app vhost['id'] do
     docroot vhost['docroot']
     server_name vhost['servername']
+    server_aliases vhost['server_aliases']
     template "vhost.conf.erb"
   end
 end
