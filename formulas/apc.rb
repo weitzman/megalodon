@@ -6,6 +6,7 @@ class Apc < Formula
   md5 'a2cf7fbf6f3a87f190d897a53260ddaa'
 
   depends_on 'pcre'
+  depends_on 'autoconf' => :build
 
   def patches
     # fixes "PHP Fatal error:  Unknown: apc_fcntl_unlock failed: in Unknown on line 0"

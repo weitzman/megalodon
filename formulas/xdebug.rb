@@ -5,6 +5,8 @@ class Xdebug < Formula
   homepage 'http://xdebug.org'
   md5 'fcdf078e715f44b77f13bac721ad63ce'
 
+  depends_on 'autoconf' => :build
+
   def install
     extensions = lib + %x[php-config --extension-dir].split('lib/')[1].strip
 

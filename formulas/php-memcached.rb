@@ -5,6 +5,7 @@ class PhpMemcached <Formula
   homepage 'http://pecl.php.net/package/memcached'
   md5 'b91f815ad59086d0c3564cce022b5c4f'
 
+  depends_on 'autoconf' => :build
   depends_on 'libmemcached'
 
   def install

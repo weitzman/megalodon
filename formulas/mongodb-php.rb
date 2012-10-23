@@ -6,6 +6,7 @@ class MongodbPhp <Formula
   md5 'b589a922222bfe5a13e5b18359e87437'
 
   depends_on 'mongodb'
+  depends_on 'autoconf' => :build
 
   def install
     extensions = lib + %x[php-config --extension-dir].split('lib/')[1].strip

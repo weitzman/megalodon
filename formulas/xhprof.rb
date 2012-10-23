@@ -6,6 +6,7 @@ class Xhprof <Formula
   md5 'ae40b153d157e6369a32e2c1a59a61ec'
 
   depends_on 'pcre'
+  depends_on 'autoconf' => :build
 
   def install
     extensions = lib + %x[php-config --extension-dir].split('lib/')[1].strip

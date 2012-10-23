@@ -5,10 +5,10 @@ def mysql_installed?
 end
 
 class Php < Formula
-  url 'http://www.php.net/get/php-5.3.8.tar.gz/from/this/mirror'
+  url 'http://www.php.net/get/php-5.3.17.tar.gz/from/this/mirror'
   homepage 'http://php.net/'
-  md5 'f4ce40d5d156ca66a996dbb8a0e7666a'
-  version '5.3.8'
+  md5 '002e02e36c2cbcada8c49a7e5956d787'
+  version '5.3.17'
 
   # So PHP extensions don't report missing symbols
   skip_clean ['bin', 'sbin']
@@ -17,7 +17,9 @@ class Php < Formula
   depends_on 'readline' unless ARGV.include? '--without-readline'
   depends_on 'libxml2'
   depends_on 'jpeg'
+  depends_on 'libpng'
   depends_on 'mcrypt'
+  depends_on 'libtool'
 
   if ARGV.include? '--with-mysql'
     depends_on 'mysql' unless mysql_installed?
