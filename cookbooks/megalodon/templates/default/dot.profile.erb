@@ -13,8 +13,8 @@ if [[ -s /usr/local/.rvm/scripts/rvm ]] ; then
   source /usr/local/.rvm/scripts/rvm
 fi
 
-if [[ -d /usr/local/Cellar/php/<%= node['megalodon']['php_version'] %>/bin ]]; then
-  export PATH=$PATH:/usr/local/Cellar/php/<%= node['megalodon']['php_version'] %>/bin
+if [[ -d <%= node['megalodon']['php_prefix'] %>/bin ]]; then
+  export PATH=$PATH:<%= node['megalodon']['php_prefix'] %>/bin
 fi
 
 if [[ -f ~/.megalodon.profile.custom ]]; then
