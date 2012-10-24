@@ -115,7 +115,6 @@ log-queries-not-using-indexes
 # Read the manual for more InnoDB related options. There are many!
 # You might want to disable InnoDB to shrink the mysqld process by circa 100MB.
 #skip-innodb
-default-table-type=innodb
 innodb_buffer_pool_size = <%= node[:mysql][:tunable][:innodb_buffer_pool_size] %>
 innodb_data_file_path=ibdata1:10M:autoextend
 innodb_flush_method=O_DIRECT
