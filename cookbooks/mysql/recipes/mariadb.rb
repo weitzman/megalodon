@@ -25,7 +25,7 @@ end
 
 bash "post-install" do
   code <<-EOH
-    (mysql_install_db)
+    (mysql_install_db --basedir=/usr/local/opt/mariadb --user=$USER)
     (cp /usr/local/Cellar/mariadb/5.*/homebrew.mxcl.mariadb.plist ~/Library/LaunchAgents)
     (launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mariadb.plist)
   EOH
