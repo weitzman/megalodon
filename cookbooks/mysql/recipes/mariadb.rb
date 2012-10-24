@@ -19,13 +19,15 @@
 
 package "mariadb"
 
+brew_prefix = `brew --prefix`.strip
+
 template "/usr/local/etc/my.cnf" do
   source "my.cnf.erb"
 end
 
 bash "post-install" do
   code <<-EOH
-    (mysql_install_db --basedir=/usr/local/opt/mariadb --user=$USER)
+    (mysql_install_db --basedir=#{brew_prefix}/opt/mariadb --user=$USER)
     (cp /usr/local/Cellar/mariadb/5.*/homebrew.mxcl.mariadb.plist ~/Library/LaunchAgents)
     (launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mariadb.plist)
   EOH
