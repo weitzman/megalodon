@@ -19,19 +19,20 @@
 
 package "mariadb"
 
-brew_prefix = `brew --prefix`.strip
-
 template "/usr/local/etc/my.cnf" do
   source "my.cnf.erb"
 end
 
+# OSX before 10.8 didn't have egrep, but grep -P worked similarly.
+grep = %x[which egrep].strip || "grep -P"
+
 bash "post-install" do
   code <<-EOH
-    (mysql_install_db --basedir=#{brew_prefix}/opt/mariadb --user=$USER)
-    (cp /usr/local/Cellar/mariadb/5.*/homebrew.mxcl.mariadb.plist ~/Library/LaunchAgents)
-    (launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mariadb.plist)
+    (mysql_install_db)
+    (cp /usr/local/Cellar/mariadb/5.*/homebrew.mxcl.*.plist ~/Library/LaunchAgents)
+    (launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.*.plist)
   EOH
-  not_if "mysql -e 'SHOW DATABASES'| grep -P '^test|^mysql'"
+  not_if "mysql -e 'SHOW DATABASES'| #{grep} '^test|^mysql'"
 end
 
 logdir = File.dirname(node[:mysql][:tunable][:log_slow_queries])
