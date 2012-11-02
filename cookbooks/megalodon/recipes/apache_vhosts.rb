@@ -43,5 +43,4 @@ end
 
 template "#{node[:megalodon][:brew_prefix]}/etc/megalodon/apache_confs/php5.conf" do
   source "php5.conf.erb"
-  action :create
 end
