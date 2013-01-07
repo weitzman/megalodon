@@ -8,13 +8,19 @@ This project is heavily influenced by [cider/cinderella](https://github.com/atmo
 
 Install [homebrew](http://mxcl.github.com/homebrew/).
 
+You can use sudo for installing gems, but don't use sudo for anything else. If you already installed Ruby with homebrew then don't use sudo for any of the installation.
+
 Install megalodon:
 
-    brew install https://raw.github.com/msonnabaum/megalodon/master/formulas/megalodon.rb
+    brew install --HEAD https://raw.github.com/msonnabaum/megalodon/master/formulas/megalodon.rb
 
 Run megalodon:
 
     megalodon install
+
+If `megalodon install` fails along the way try running it again.
+
+If it fails again, read what command failed and run just that command and look at the output.
 
 ## Usage
 
@@ -49,3 +55,9 @@ Then restart apache as above.
 ## Other notes
 
 mysql default username is root, no password
+
+## Troubleshooting the install
+curl http://localhost/ -H "Host www.example.com"
+
+Replace www.example.com with the hostname you expect to work. If that returns the content you expect.
+
