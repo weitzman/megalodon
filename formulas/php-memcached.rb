@@ -1,9 +1,9 @@
 require 'formula'
 
 class PhpMemcached <Formula
-  url 'http://pecl.php.net/get/memcached-1.0.2.tgz'
+  url 'http://pecl.php.net/get/memcached-2.1.0.tgz'
   homepage 'http://pecl.php.net/package/memcached'
-  md5 'b91f815ad59086d0c3564cce022b5c4f'
+  md5 'daf070aad13bebffdff50acf6e93043c'
 
   depends_on 'autoconf' => :build
   depends_on 'libmemcached'
