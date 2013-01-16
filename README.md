@@ -51,6 +51,16 @@ For example, you could add example.com to your /etc/hosts for 127.0.0.1 and then
       "server_aliases": [ "www.example.com", "foo.example.com"]
     }
 
+You can specify additional key/value pairs as desired:
+
+    {
+      "id": "example_com",
+      "docroot": "/home/yourname/workspace/example/",
+      "servername": "example.com",
+      "php_admin_value": "xdebug.remote_enable 1",
+      "php_admin_value": "xdebug.remote_autostart 1"
+    }
+
 To re-generate the apache confs after modifying/adding vhosts:
 
     megalodon update_vhosts
