@@ -42,9 +42,14 @@ You will need to edit /etc/hosts as per usual; To add a new virtual host, add a 
 
     ~/.megalodon/data_bags/vhosts
 
-To add server aliases to a virtual host, add the following line to a host's json file.
+For example, you could add example.com to your /etc/hosts for 127.0.0.1 and then use an entry called example.json in ~/.megalodon/data_bags/vhosts with these contents:
 
-    "server_aliases": [ "alias1.example.com", "alias2.example.com"],
+    {
+      "id": "example_com",
+      "docroot": "/home/yourname/workspace/example/",
+      "servername": "example.com",
+      "server_aliases": [ "www.example.com", "foo.example.com"]
+    }
 
 To re-generate the apache confs after modifying/adding vhosts:
 
@@ -57,7 +62,9 @@ Then restart apache as above.
 mysql default username is root, no password
 
 ## Troubleshooting the install
-curl http://localhost/ -H "Host www.example.com"
+Test if a new virtual host is working using curl:
+
+    curl http://localhost/ -H "Host www.example.com"
 
 Replace www.example.com with the hostname you expect to work. If that returns the content you expect.
 
